@@ -3,19 +3,23 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {cors: false});
-  app.enableCors({credentials: true, origin: true})
+  const app = await NestFactory.create(AppModule, { cors: false });
+  app.enableCors({ credentials: true, origin: true })
 
   const config = new DocumentBuilder()
-  .setTitle('SchoolAPI')
-  .setDescription('The school API description')
-  .setVersion('1.0')
-  .addTag('school')
-  .build()
+    .setTitle('SchoolAPI')
+    .setDescription('The school API description')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build()
 
   const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('swagger', app, document)
+  SwaggerModule.setup('swagger', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
 
-  await app.listen(5000);
+  await app.listen(7777);
 }
 bootstrap();
