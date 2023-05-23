@@ -23,7 +23,11 @@ export class UsersService {
     });
   }
 
-  create(dto: CreateUserDto) {
-    return this.repository.save(dto);
+  async create(dto: CreateUserDto): Promise<UserEntity> {
+    const user = new UserEntity();
+    user.email = dto.email
+    user.fullName = dto.fullName
+    user.password = dto.password
+    return await user.save();
   }
 }
